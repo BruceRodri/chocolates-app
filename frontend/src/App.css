@@ -1,0 +1,135 @@
+.app-body {
+	width: min(1440px, calc(100% - 32px));
+	min-height: 100svh;
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	align-items: start;
+	gap: 20px;
+	margin: 0 auto;
+	padding: 24px 0 40px;
+}
+
+.app-shell {
+	width: min(1120px, calc(100% - 32px));
+	min-height: 100svh;
+	display: grid;
+	place-items: center;
+	margin: 0 auto;
+	padding: 24px 0 40px;
+	animation: content-enter 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.app-shell.with-sidebar {
+	width: 100%;
+	min-height: auto;
+	margin: 0;
+	place-items: start center;
+	padding: 0;
+}
+
+.eyebrow {
+	margin: 0 0 10px;
+	color: var(--accent);
+	font-size: 0.78rem;
+	font-weight: 900;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+h1 {
+	margin: 0;
+	color: var(--ink);
+	font-size: clamp(2.4rem, 7vw, 4.2rem);
+	line-height: 0.98;
+	letter-spacing: 0;
+}
+
+.form-button {
+	min-height: 46px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	border: 0;
+	border-radius: 14px;
+	background: #7e5b40;
+	color: #fffaf2;
+	cursor: pointer;
+	font-weight: 900;
+	transition:
+		background-color 180ms ease,
+		transform 180ms ease;
+}
+
+.link-button {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	justify-self: center;
+	border: 0;
+	background: transparent;
+	color: #7e5b40;
+	cursor: pointer;
+	font-weight: 800;
+	transition:
+		color 180ms ease,
+		transform 180ms ease;
+}
+
+.form-button:hover,
+.link-button:hover {
+	transform: translateY(-1px);
+}
+
+@keyframes content-enter {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 1ms !important;
+		animation-iteration-count: 1 !important;
+		scroll-behavior: auto !important;
+		transition-duration: 1ms !important;
+	}
+}
+
+@media (max-width: 1120px) and (min-width: 701px) {
+	.app-body {
+		width: calc(100% - 20px);
+		gap: 14px;
+	}
+}
+
+@media (max-width: 700px) and (min-width: 561px) {
+	.app-body {
+		width: calc(100% - 16px);
+		gap: 12px;
+	}
+}
+
+@media (max-width: 560px) {
+	.app-body {
+		width: min(100% - 20px, 960px);
+		display: block;
+		padding-top: 68px;
+	}
+
+	.app-shell {
+		width: min(100% - 20px, 960px);
+		padding-top: 24px;
+	}
+
+	.app-shell.with-sidebar {
+		width: 100%;
+		margin: 0 auto;
+		padding-top: 0;
+	}
+}

@@ -1,0 +1,220 @@
+{
+  "baseUrl": "/api",
+  "endpoints": [
+    {
+      "name": "login",
+      "method": "POST",
+      "path": "/auth/login",
+      "url": "/api/auth/login",
+      "source": "backend/src/routes/auth.routes.js"
+    },
+    {
+      "name": "perfilAutenticado",
+      "method": "GET",
+      "path": "/auth/me",
+      "url": "/api/auth/me",
+      "source": "backend/src/routes/auth.routes.js",
+      "auth": true
+    },
+    {
+      "name": "listarUsuarios",
+      "method": "GET",
+      "path": "/usuarios",
+      "url": "/api/usuarios",
+      "source": "backend/src/routes/usuarios.routes.js",
+      "frontendKey": "usuarios"
+    },
+    {
+      "name": "buscarUsuario",
+      "method": "GET",
+      "path": "/usuarios/:id",
+      "url": "/api/usuarios/:id",
+      "source": "backend/src/routes/usuarios.routes.js",
+      "params": ["id"]
+    },
+    {
+      "name": "crearUsuario",
+      "method": "POST",
+      "path": "/usuarios",
+      "url": "/api/usuarios",
+      "source": "backend/src/routes/usuarios.routes.js"
+    },
+    {
+      "name": "actualizarUsuario",
+      "method": "PUT",
+      "path": "/usuarios/:id",
+      "url": "/api/usuarios/:id",
+      "source": "backend/src/routes/usuarios.routes.js",
+      "params": ["id"]
+    },
+    {
+      "name": "eliminarUsuario",
+      "method": "DELETE",
+      "path": "/usuarios/:id",
+      "url": "/api/usuarios/:id",
+      "source": "backend/src/routes/usuarios.routes.js",
+      "params": ["id"]
+    },
+    {
+      "name": "listarProductos",
+      "method": "GET",
+      "path": "/productos",
+      "url": "/api/productos",
+      "source": "backend/src/routes/productos.routes.js",
+      "frontendKey": "productos"
+    },
+    {
+      "name": "buscarProducto",
+      "method": "GET",
+      "path": "/productos/:item",
+      "url": "/api/productos/:item",
+      "source": "backend/src/routes/productos.routes.js",
+      "params": ["item"]
+    },
+    {
+      "name": "crearProducto",
+      "method": "POST",
+      "path": "/productos",
+      "url": "/api/productos",
+      "source": "backend/src/routes/productos.routes.js"
+    },
+    {
+      "name": "actualizarProducto",
+      "method": "PUT",
+      "path": "/productos/:item",
+      "url": "/api/productos/:item",
+      "source": "backend/src/routes/productos.routes.js",
+      "params": ["item"]
+    },
+    {
+      "name": "eliminarProducto",
+      "method": "DELETE",
+      "path": "/productos/:item",
+      "url": "/api/productos/:item",
+      "source": "backend/src/routes/productos.routes.js",
+      "params": ["item"]
+    },
+    {
+      "name": "listarBalances",
+      "method": "GET",
+      "path": "/controles/balance",
+      "url": "/api/controles/balance",
+      "source": "backend/src/routes/controles.routes.js",
+      "frontendKey": "controles"
+    },
+    {
+      "name": "buscarBalance",
+      "method": "GET",
+      "path": "/controles/balance/:id",
+      "url": "/api/controles/balance/:id",
+      "source": "backend/src/routes/controles.routes.js",
+      "params": ["id"]
+    },
+    {
+      "name": "guardarControl",
+      "method": "POST",
+      "path": "/controles",
+      "url": "/api/controles",
+      "source": "backend/src/routes/controles.routes.js",
+      "auth": true,
+      "body": {
+        "required": [
+          "id_turno",
+          "item_chocolate_tanque",
+          "item_corriendo",
+          "moldes_llenados",
+          "porcentaje_singles_banda",
+          "porcentaje_tanque_morcos",
+          "temper_unit_libras",
+          "porcentaje_tanque_pti",
+          "hopper_libras",
+          "porcentaje_chocolate_piso",
+          "porcentaje_chocolate_hacia_tanque",
+          "bandejas_con_chocolate",
+          "producto_terminado_proceso",
+          "total_chocolate_sistema"
+        ]
+      }
+    },
+    {
+      "name": "actualizarControl",
+      "method": "PUT",
+      "path": "/controles/:id",
+      "url": "/api/controles/:id",
+      "source": "backend/src/routes/controles.routes.js",
+      "auth": true,
+      "params": ["id"]
+    },
+    {
+      "name": "eliminarControl",
+      "method": "DELETE",
+      "path": "/controles/:id",
+      "url": "/api/controles/:id",
+      "source": "backend/src/routes/controles.routes.js",
+      "auth": true,
+      "params": ["id"]
+    },
+    {
+      "name": "listarTiposChocolate",
+      "method": "GET",
+      "path": "/tipos-chocolate",
+      "url": "/api/tipos-chocolate",
+      "source": "backend/src/routes/tiposChocolate.routes.js",
+      "frontendKey": "tipos"
+    },
+    {
+      "name": "crearTipoChocolate",
+      "method": "POST",
+      "path": "/tipos-chocolate",
+      "url": "/api/tipos-chocolate",
+      "source": "backend/src/routes/tiposChocolate.routes.js"
+    },
+    {
+      "name": "actualizarTipoChocolate",
+      "method": "PUT",
+      "path": "/tipos-chocolate/:id",
+      "url": "/api/tipos-chocolate/:id",
+      "source": "backend/src/routes/tiposChocolate.routes.js",
+      "params": ["id"]
+    },
+    {
+      "name": "eliminarTipoChocolate",
+      "method": "DELETE",
+      "path": "/tipos-chocolate/:id",
+      "url": "/api/tipos-chocolate/:id",
+      "source": "backend/src/routes/tiposChocolate.routes.js",
+      "params": ["id"]
+    },
+    {
+      "name": "listarTanques",
+      "method": "GET",
+      "path": "/tanques",
+      "url": "/api/tanques",
+      "source": "backend/src/routes/tanques.routes.js",
+      "frontendKey": "tanques"
+    },
+    {
+      "name": "crearTanque",
+      "method": "POST",
+      "path": "/tanques",
+      "url": "/api/tanques",
+      "source": "backend/src/routes/tanques.routes.js"
+    },
+    {
+      "name": "actualizarTanque",
+      "method": "PUT",
+      "path": "/tanques/:nombre",
+      "url": "/api/tanques/:nombre",
+      "source": "backend/src/routes/tanques.routes.js",
+      "params": ["nombre"]
+    },
+    {
+      "name": "eliminarTanque",
+      "method": "DELETE",
+      "path": "/tanques/:nombre",
+      "url": "/api/tanques/:nombre",
+      "source": "backend/src/routes/tanques.routes.js",
+      "params": ["nombre"]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+.metric {
+	min-height: 92px;
+	display: grid;
+	align-content: space-between;
+	gap: 8px;
+	padding: 14px;
+	border: 1px solid rgba(122, 86, 57, 0.16);
+	border-radius: 8px;
+	background: rgba(255, 250, 242, 0.7);
+}
+
+.metric p {
+	margin: 0;
+	color: var(--muted);
+	font-size: 0.86rem;
+	font-weight: 800;
+}
+
+.metric strong {
+	color: var(--ink);
+	font-size: 1.12rem;
+}
