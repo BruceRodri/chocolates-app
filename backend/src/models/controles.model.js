@@ -5,14 +5,24 @@ const RAW_FIELDS = "c.moldes_llenados AS raw_moldes_llenados, c.porcentaje_singl
 
 class ControlModel {
   //OBTENER EL BALANCE DE CHOCOLATE COMPLETO USANDO LA VISTA MATEMÁTICA
-  static async obtenerBalances() {
+  static async obtenerBalances(page = 1, limit = 50) {
+    const offset = (page - 1) * limit;
+
+    const [[{ total }]] = await db.query(
+      `SELECT COUNT(*) AS total
+       FROM vista_balance_chocolate v
+       JOIN controles_diarios c ON v.id_control = c.id_control`,
+    );
+
     const [rows] = await db.query(
       `SELECT v.*, ${LB_FIELDS}, ${RAW_FIELDS}
        FROM vista_balance_chocolate v
        JOIN controles_diarios c ON v.id_control = c.id_control
-       ORDER BY v.fecha_registro DESC, v.id_control DESC`,
+       ORDER BY v.fecha_registro DESC, v.id_control DESC
+       LIMIT ${Number(limit)} OFFSET ${Number(offset)}`,
     );
-    return rows;
+
+    return { rows, total };
   }
 
   //BUSCAR EL REPORTE DE UN CONTROL ESPECÍFICO POR SU ID EN LA VISTA

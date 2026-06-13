@@ -22,6 +22,7 @@ import {
   X,
 } from 'lucide-react'
 import { API_BASE } from '../../constants/config'
+import { useToast } from '../../components/Toast'
 import { openPrintWindow } from '../../utils/printReport'
 import { getSavedReports, saveReport, deleteReport } from '../../utils/reportStorage'
 import './CrudPage.css'
@@ -112,6 +113,8 @@ export function CrudPage({ resource, session }) {
   const [printPrompt, setPrintPrompt] = useState(null)
   const [showReports, setShowReports] = useState(false)
   const [savedReports, setSavedReports] = useState([])
+  const [deleteTarget, setDeleteTarget] = useState(null)
+  const showToast = useToast()
 
   const selectedId = selectedItem ? resource.getId(selectedItem) : null
   const formTitle = mode === 'create' ? `New ${resource.title}` : `Edit ${selectedId}`
@@ -162,11 +165,14 @@ export function CrudPage({ resource, session }) {
     return filteredItems.slice(start, start + PAGE_SIZE)
   }, [filteredItems, page])
 
+  const [totalRecords, setTotalRecords] = useState(0)
+
   async function loadItems() {
     setIsLoading(true)
     setStatus('')
     try {
-      const response = await fetch(`${API_BASE}${resource.listEndpoint || resource.endpoint}`, {
+      const params = resource.id === 'controles' ? `?page=${page}&limit=20` : ''
+      const response = await fetch(`${API_BASE}${resource.listEndpoint || resource.endpoint}${params}`, {
         headers: session?.token ? { Authorization: `Bearer ${session.token}` } : {},
       })
       const payload = await response.json()
@@ -175,9 +181,9 @@ export function CrudPage({ resource, session }) {
 
       const data = payload.data || []
       setItems(data)
+      setTotalRecords(payload.total ?? data.length)
       setEditVals({})
       editValsRef.current = {}
-      setPage(1)
       setStatus('')
     } catch (error) {
       setStatus(error.message)
@@ -196,7 +202,16 @@ export function CrudPage({ resource, session }) {
     setActiveFilter(0)
     setFieldErrors({})
     setFilterDate('')
+    setTotalRecords(0)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resource])
+
+  useEffect(() => {
+    if (resource.id === 'controles' && page > 1) {
+      loadItems()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page])
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -370,6 +385,7 @@ export function CrudPage({ resource, session }) {
       setMode('')
       setSelectedItem(null)
       await loadItems()
+      showToast(mode === 'create' ? 'Record created successfully' : 'Record updated successfully', 'success')
 
       if (resource.id === 'controles' && result.data) {
         setPrintPrompt(result.data)
@@ -405,8 +421,14 @@ export function CrudPage({ resource, session }) {
     setShowReports(true)
   }
 
-  async function deleteItem(item) {
-    const id = resource.getId(item)
+  function confirmDelete(item) {
+    setDeleteTarget(item)
+  }
+
+  async function deleteItem() {
+    if (!deleteTarget) return
+    const id = resource.getId(deleteTarget)
+    setDeleteTarget(null)
 
     try {
       const response = await fetch(`${API_BASE}${resource.endpoint}/${encodeURIComponent(id)}`, {
@@ -418,6 +440,7 @@ export function CrudPage({ resource, session }) {
       if (!response.ok) throw new Error(payload.mensaje || 'Could not delete')
 
       await loadItems()
+      showToast('Record deleted successfully', 'success')
     } catch (error) {
       setStatus(error.message)
     }
@@ -695,14 +718,16 @@ export function CrudPage({ resource, session }) {
           <div>
             <p className="eyebrow">{resource.eyebrow}</p>
             <h1 id={`${resource.title}-title`}>{resource.title}</h1>
-            <p>{filteredItems.length} of {items.length} records</p>
+            <p>{filteredItems.length} of {totalRecords} records</p>
           </div>
           <div className="crud-actions">
             {resource.id === 'controles' && (
-              <button type="button" onClick={openSavedReports}>
-                <Printer size={16} aria-hidden="true" />
-                Reports
-              </button>
+              <>
+                <button type="button" onClick={openSavedReports}>
+                  <Printer size={16} aria-hidden="true" />
+                  Reports
+                </button>
+              </>
             )}
             <button type="button" onClick={loadItems}>
               <RefreshCw size={16} aria-hidden="true" />
@@ -805,7 +830,7 @@ export function CrudPage({ resource, session }) {
                                 <Edit3 size={15} aria-hidden="true" />
                                 Edit
                               </button>
-                              <button type="button" onClick={() => deleteItem(item)}>
+                              <button type="button" onClick={() => confirmDelete(item)}>
                                 <Trash2 size={15} aria-hidden="true" />
                                 Delete
                               </button>
@@ -844,7 +869,7 @@ export function CrudPage({ resource, session }) {
                                 <Edit3 size={15} aria-hidden="true" />
                                 Edit
                               </button>
-                              <button type="button" onClick={() => deleteItem(item)}>
+                              <button type="button" onClick={() => confirmDelete(item)}>
                                 <Trash2 size={15} aria-hidden="true" />
                                 Delete
                               </button>
@@ -868,7 +893,7 @@ export function CrudPage({ resource, session }) {
                   <Edit3 size={15} aria-hidden="true" />
                   Edit
                 </button>
-                <button type="button" onClick={() => deleteItem(item)}>
+                <button type="button" onClick={() => confirmDelete(item)}>
                   <Trash2 size={15} aria-hidden="true" />
                   Delete
                 </button>
@@ -894,6 +919,29 @@ export function CrudPage({ resource, session }) {
       {modal && createPortal(modal, document.body)}
       {printModal && createPortal(printModal, document.body)}
       {reportsModal && createPortal(reportsModal, document.body)}
+      {deleteTarget && createPortal(
+        <div className="modal-backdrop" role="presentation">
+          <div className="crud-modal confirm-modal" role="dialog" aria-modal="true">
+            <div className="crud-form-title">
+              <div>
+                <p className="eyebrow">{resource.eyebrow}</p>
+                <strong>Delete {resource.getTitle(deleteTarget)}</strong>
+              </div>
+            </div>
+            <p style={{ margin: '12px 0', lineHeight: 1.5 }}>
+              Are you sure you want to delete this record? This action cannot be undone.
+            </p>
+            <div className="modal-actions">
+              <button type="button" onClick={() => setDeleteTarget(null)}>Cancel</button>
+              <button className="form-button" type="button" onClick={deleteItem} style={{ background: '#b13a3a' }}>
+                <Trash2 size={16} aria-hidden="true" />
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body,
+      )}
     </>
   )
 }

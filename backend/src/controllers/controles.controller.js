@@ -5,14 +5,20 @@ const ControlesView = require("../views/controles.view");
 class ControlesController {
   static async listarBalances(req, res) {
     try {
-      const balances = await ControlModel.obtenerBalances();
-      //FORMATEAMOS LOS BALANCES DIARIOS CON LA VISTA
+      const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+      const limit = Math.min(100, Math.max(1, parseInt(req.query.limit, 10) || 50));
+
+      const { rows, total } = await ControlModel.obtenerBalances(page, limit);
       const balancesFormateados =
-        ControlesView.renderizarListaBalances(balances);
+        ControlesView.renderizarListaBalances(rows);
 
       res.status(200).json({
         ok: true,
         count: balancesFormateados.length,
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
         data: balancesFormateados,
       });
     } catch (error) {

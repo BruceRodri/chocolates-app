@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import './App.css'
 import { AppSidebar } from './components/AppSidebar'
+import { ToastProvider } from './components/Toast'
 import { CRUD_RESOURCES, NAV_ITEMS } from './constants/navigation'
 import { CrudPage } from './pages/CrudPage'
 import { DashboardPage } from './pages/DashboardPage'
@@ -102,34 +103,36 @@ function App() {
 
   return (
     <>
-      {session ? (
-        <div className="app-body">
-          <AppSidebar
-            activeView={activeView}
-            mobileOpen={sidebarOpen}
-            onNavigate={navigateApp}
-            onToggleMobile={() => setSidebarOpen(!sidebarOpen)}
-            onSignOut={signOut}
-            session={session}
-          />
+      <ToastProvider>
+        {session ? (
+          <div className="app-body">
+            <AppSidebar
+              activeView={activeView}
+              mobileOpen={sidebarOpen}
+              onNavigate={navigateApp}
+              onToggleMobile={() => setSidebarOpen(!sidebarOpen)}
+              onSignOut={signOut}
+              session={session}
+            />
 
-          <main className="app-shell with-sidebar">
-            {activeView === 'dashboard' && <DashboardPage key="dashboard" session={session} />}
-            {CRUD_RESOURCES[activeView] && (
-              <CrudPage
-                key={activeView}
-                resource={CRUD_RESOURCES[activeView]}
-                session={session}
-              />
-            )}
+            <main className="app-shell with-sidebar">
+              {activeView === 'dashboard' && <DashboardPage key="dashboard" session={session} />}
+              {CRUD_RESOURCES[activeView] && (
+                <CrudPage
+                  key={activeView}
+                  resource={CRUD_RESOURCES[activeView]}
+                  session={session}
+                />
+              )}
+            </main>
+          </div>
+        ) : (
+          <main className="app-shell">
+            {publicView === 'signin' && <SignInPage key="signin" onSignedIn={handleSignedIn} onSignUp={goSignUp} />}
+            {publicView === 'signup' && <SignUpPage key="signup" onSignedUp={goSignIn} onSignIn={goSignIn} />}
           </main>
-        </div>
-      ) : (
-        <main className="app-shell">
-          {publicView === 'signin' && <SignInPage key="signin" onSignedIn={handleSignedIn} onSignUp={goSignUp} />}
-          {publicView === 'signup' && <SignUpPage key="signup" onSignedUp={goSignIn} onSignIn={goSignIn} />}
-        </main>
-      )}
+        )}
+      </ToastProvider>
     </>
   )
 }
