@@ -9,15 +9,15 @@ function getChartData(reporte) {
   if (!reporte) return []
 
   return [
-    { label: 'Moldes', value: reporte.calculosLibras?.enMoldes },
-    { label: 'Banda', value: reporte.calculosLibras?.enBanda },
-    { label: 'Morcos', value: reporte.calculosLibras?.enTanqueMorcos },
+    { label: 'Molds', value: reporte.calculosLibras?.enMoldes },
+    { label: 'Belt', value: reporte.calculosLibras?.enBanda },
+    { label: 'Morcos Tank', value: reporte.calculosLibras?.enTanqueMorcos },
     { label: 'Temper', value: reporte.calculosLibras?.enTemperUnit },
     { label: 'PTI', value: reporte.calculosLibras?.enTanquePti },
     { label: 'Hopper', value: reporte.calculosLibras?.enHopper },
-    { label: 'Piso', value: reporte.calculosLibras?.enPiso },
-    { label: 'Bandejas', value: reporte.calculosLibras?.enBandejas },
-    { label: 'Proceso', value: reporte.calculosLibras?.enProcesoTerminado },
+    { label: 'Floor', value: reporte.calculosLibras?.enPiso },
+    { label: 'Trays', value: reporte.calculosLibras?.enBandejas },
+    { label: 'Process', value: reporte.calculosLibras?.enProcesoTerminado },
   ].map((item) => ({ ...item, value: Number(item.value || 0) }))
 }
 
@@ -38,10 +38,12 @@ function getLatestReportDate(reportes) {
   return getDateString(latest.fecha)
 }
 
+const FILTER_DATE_KEY = 'dashboard_filter_date'
+
 export function DashboardPage({ session }) {
   const [reportes, setReportes] = useState([])
   const [status, setStatus] = useState('Loading dashboard...')
-  const [filterDate, setFilterDate] = useState('')
+  const [filterDate, setFilterDate] = useState(() => localStorage.getItem(FILTER_DATE_KEY) || '')
 
   useEffect(() => {
     let active = true
@@ -58,7 +60,10 @@ export function DashboardPage({ session }) {
         if (active) {
           const data = payload.data || []
           setReportes(data)
-          setFilterDate(getLatestReportDate(data))
+          const saved = localStorage.getItem(FILTER_DATE_KEY)
+          if (!saved) {
+            setFilterDate(getLatestReportDate(data))
+          }
           setStatus('')
         }
       } catch (error) {
@@ -70,6 +75,10 @@ export function DashboardPage({ session }) {
 
     return () => { active = false }
   }, [session?.token])
+
+  useEffect(() => {
+    localStorage.setItem(FILTER_DATE_KEY, filterDate)
+  }, [filterDate])
 
   const reporte = useMemo(() => {
     if (!reportes.length) return null
