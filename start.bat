@@ -1,17 +1,24 @@
 @echo off
 cd /d "%~dp0"
 
-echo Starting MySQL...
+echo [1/3] Iniciando base de datos...
 cd backend
 docker compose up -d
 cd ..
 
-echo Starting Backend...
-start "Backend" cmd /c "cd /d "%~dp0backend" && npm run dev"
+echo [2/3] Esperando base de datos...
+timeout /t 8 /nobreak >nul
 
-echo Starting Frontend...
-start "Frontend" cmd /c "cd /d "%~dp0frontend" && npm run dev"
+echo [3/3] Iniciando servidor...
+cd backend
+start "Chocolates App" cmd /c "npm start"
+cd ..
 
-echo All services started.
-echo Backend: http://localhost:3000
-echo Frontend: http://localhost:5173
+echo ========================================
+echo  Sistema iniciado correctamente
+echo.
+echo  Abre el navegador y ve a:
+echo  http://localhost:3000
+echo ========================================
+timeout /t 3 /nobreak >nul
+start http://localhost:3000

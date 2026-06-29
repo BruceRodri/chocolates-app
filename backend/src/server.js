@@ -14,8 +14,8 @@ async function startServer() {
     await db.query("SELECT 1 + 1 AS resultado");
     console.log("¡CONEXIÓN EXITOSA A MYSQL EN DOCKER!");
 
-    app.listen(PORT, () => {
-      console.log(`SERVIDOR CORRIENDO EN EL PUERTO http://localhost:${PORT}`);
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`SERVIDOR CORRIENDO EN EL PUERTO http://0.0.0.0:${PORT}`);
     });
   } catch (error) {
     console.error(

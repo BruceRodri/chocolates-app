@@ -99,8 +99,8 @@ export const CRUD_RESOURCES = {
       { name: 'temper_unit_libras', label: 'Temper unit', section: 'Tanks & Floor', type: 'number', step: '0.01' },
       { name: 'porcentaje_tanque_pti', label: '% PTI Tank', section: 'Tanks & Floor', type: 'number' },
       { name: 'hopper_libras', label: 'Hopper', section: 'Tanks & Floor', type: 'number', step: '0.01' },
-      { name: 'porcentaje_chocolate_piso', label: '% Chocolate on the floor', section: 'Tanks & Floor', type: 'number' },
-      { name: 'total_peso_palet', label: 'Enter total pallet weight', section: 'Tanks & Floor', type: 'number', step: '0.01' },
+      { name: 'porcentaje_chocolate_piso', label: 'boxes on the floor chocolate', section: 'Tanks & Floor', type: 'number' },
+      { name: 'total_peso_palet', label: 'total amount of chocolate on the floor', section: 'Tanks & Floor', type: 'number', step: '0.01', readOnly: true },
       { name: 'total_chocolate_sistema', label: 'Total System (lb)', section: 'System', type: 'number', step: '0.01' },
     ],
     toEditPayload: (item) => ({

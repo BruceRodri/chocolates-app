@@ -1,5 +1,6 @@
 //IMPORTAMOS EXPRESS
 const express = require("express");
+const path = require("path");
 //CREAMOS INSTANCIA DE NUESTRA APP
 const app = express();
 // IMPORTAMOS LAS RUTAS
@@ -22,12 +23,15 @@ app.use((req, res, next) => {
 });
 // CUALQUIER PETICIÓN QUE LLEGUE, PASARÁ PRIMERO POR NUESTRO LOGGER
 app.use(LoggerMiddleware.registrarPeticion);
-// RUTA DE BIENVENIDA
-app.get("/", (req, res) => {
-  res.json({ mensaje: "SISTEMA DE CHOCOLATES" });
-});
 // CONEXIÓN DE LAS RUTAS
 app.use("/api", apiRouter);
+// SERVIDO DEL FRONTEND CONSTRUIDO (PRODUCCIÓN)
+const distPath = path.join(__dirname, "../../frontend/dist");
+app.use(express.static(distPath));
+// FALLBACK: cualquier otra ruta sirve index.html (para SPA)
+app.get("/{*path}", (req, res) => {
+  res.sendFile(path.join(distPath, "index.html"));
+});
 // MIDDLEWARE GLOBAL DE MANEJO DE ERRORES
 app.use((err, req, res, next) => {
   err.statusCode = err.statusCode || 500;

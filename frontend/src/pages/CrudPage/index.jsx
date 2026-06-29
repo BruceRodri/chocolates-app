@@ -311,6 +311,10 @@ export function CrudPage({ resource, session }) {
         const m = Number(field.name === 'moldes_en_banda' ? value : current.moldes_en_banda)
         next.piezas_singles_en_banda = (isNaN(u) ? 0 : u) * (isNaN(m) ? 0 : m)
       }
+      if (resource.id === 'controles' && field.name === 'porcentaje_chocolate_piso') {
+        const boxes = Number(value)
+        next.total_peso_palet = isNaN(boxes) ? 0 : boxes * 50
+      }
       return next
     })
     setFieldErrors((current) => {
@@ -668,6 +672,7 @@ export function CrudPage({ resource, session }) {
                           value={formValues[field.name] ?? ''}
                           type={field.type || 'text'}
                           step={field.step}
+                          readOnly={field.readOnly}
                           onChange={(event) => updateField(field, event.target.value)}
                           onFocus={(event) => {
                             const val = formValues[field.name]
