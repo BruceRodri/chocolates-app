@@ -30,6 +30,7 @@ class ControlesView {
         enPiso: Number(balance.libras_chocolate_piso),
         enBandejas: Number(balance.libras_bandejas),
         enProcesoTerminado: Number(balance.libras_producto_en_proceso),
+        enDisplays: Number(balance.libras_displays),
       },
       editablesLibras: {
         moldes: Number(balance.moldes_libras || 0),
@@ -42,6 +43,7 @@ class ControlesView {
         devuelto: Number(balance.devuelto_libras || 0),
         bandejas: Number(balance.bandejas_libras || 0),
         proceso: Number(balance.proceso_libras || 0),
+        displays: Number(balance.displays_libras || 0),
       },
       insumos: {
         moldesLlenados: Number(balance.raw_moldes_llenados),
@@ -54,6 +56,7 @@ class ControlesView {
         hopperLibras: Number(balance.raw_hopper_libras),
         porcentajeChocolatePiso: this.normalizarPorcentaje(balance.raw_porcentaje_chocolate_piso),
         totalPesoPalet: Number(balance.raw_total_peso_palet),
+        assembledDisplays: Number(balance.raw_assembled_displays),
       },
       totalesSistema: {
         totalChocolateFisico: Number(balance.total_chocolate_fisico),

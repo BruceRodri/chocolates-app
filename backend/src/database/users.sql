@@ -20,9 +20,10 @@ INSERT INTO controles_diarios (
     total_peso_palet,
     bandejas_con_chocolate,
     producto_terminado_proceso,
+    assembled_displays,
     total_chocolate_sistema
 ) VALUES
-(1, '2026-06-02 13:45:04', 1, 3, '10186', '21101', 300, 1.0000, 0.7000, 200.00, 0.8100, 120.00, 0.9000, 1900, 2, 3575, 6361.59599);
+(1, '2026-06-02 13:45:04', 1, 3, '10186', '21101', 300, 1.0000, 0.7000, 200.00, 0.8100, 120.00, 0.9000, 1900, 2, 3575, 0, 6361.59599);
 
 INSERT INTO stock (
     fecha_registro,

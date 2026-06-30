@@ -130,6 +130,7 @@
           "hopper_libras",
           "porcentaje_chocolate_piso",
           "porcentaje_chocolate_hacia_tanque",
+          "assembled_displays",
           "bandejas_con_chocolate",
           "producto_terminado_proceso",
           "total_chocolate_sistema"

@@ -1,7 +1,7 @@
 const db = require("../config/db");
 
-const LB_FIELDS = "c.moldes_libras, c.banda_libras, c.morcos_libras, c.temper_libras, c.pti_libras, c.piso_libras, c.devuelto_libras, c.bandejas_libras, c.proceso_libras"
-const RAW_FIELDS = "c.moldes_llenados AS raw_moldes_llenados, c.porcentaje_singles_banda AS raw_porcentaje_singles_banda, c.porcentaje_tanque_morcos AS raw_porcentaje_tanque_morcos, c.temper_unit_libras AS raw_temper_unit_libras, c.porcentaje_tanque_pti AS raw_porcentaje_tanque_pti, c.hopper_libras AS raw_hopper_libras, c.porcentaje_chocolate_piso AS raw_porcentaje_chocolate_piso, c.total_peso_palet AS raw_total_peso_palet, c.bandejas_con_chocolate AS raw_bandejas_con_chocolate, c.producto_terminado_proceso AS raw_producto_terminado_proceso"
+const LB_FIELDS = "c.moldes_libras, c.banda_libras, c.morcos_libras, c.temper_libras, c.pti_libras, c.piso_libras, c.devuelto_libras, c.bandejas_libras, c.proceso_libras, c.displays_libras"
+const RAW_FIELDS = "c.moldes_llenados AS raw_moldes_llenados, c.porcentaje_singles_banda AS raw_porcentaje_singles_banda, c.porcentaje_tanque_morcos AS raw_porcentaje_tanque_morcos, c.temper_unit_libras AS raw_temper_unit_libras, c.porcentaje_tanque_pti AS raw_porcentaje_tanque_pti, c.hopper_libras AS raw_hopper_libras, c.porcentaje_chocolate_piso AS raw_porcentaje_chocolate_piso, c.total_peso_palet AS raw_total_peso_palet, c.bandejas_con_chocolate AS raw_bandejas_con_chocolate, c.producto_terminado_proceso AS raw_producto_terminado_proceso, c.assembled_displays AS raw_assembled_displays"
 
 class ControlModel {
   //OBTENER EL BALANCE DE CHOCOLATE COMPLETO USANDO LA VISTA MATEMÁTICA
@@ -54,6 +54,7 @@ class ControlModel {
       total_peso_palet,
       bandejas_con_chocolate,
       producto_terminado_proceso,
+      assembled_displays,
       total_chocolate_sistema,
       moldes_libras,
       banda_libras,
@@ -64,6 +65,7 @@ class ControlModel {
       devuelto_libras,
       bandejas_libras,
       proceso_libras,
+      displays_libras,
     } = datosControl;
 
     const [result] = await db.query(
@@ -72,11 +74,12 @@ class ControlModel {
             moldes_llenados, porcentaje_singles_banda, porcentaje_tanque_morcos, temper_unit_libras, 
             porcentaje_tanque_pti, hopper_libras, porcentaje_chocolate_piso, 
             total_peso_palet, bandejas_con_chocolate, producto_terminado_proceso,
+            assembled_displays,
             total_chocolate_sistema,
             moldes_libras, banda_libras, morcos_libras, temper_libras, pti_libras,
-            piso_libras, devuelto_libras, bandejas_libras, proceso_libras) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-            ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            piso_libras, devuelto_libras, bandejas_libras, proceso_libras, displays_libras) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         fecha_registro || new Date(),
         datosControl.id_usuario,
@@ -93,6 +96,7 @@ class ControlModel {
         total_peso_palet,
         bandejas_con_chocolate,
         producto_terminado_proceso,
+        assembled_displays || 0,
         total_chocolate_sistema,
         moldes_libras || 0,
         banda_libras || 0,
@@ -103,6 +107,7 @@ class ControlModel {
         devuelto_libras || 0,
         bandejas_libras || 0,
         proceso_libras || 0,
+        displays_libras || 0,
       ],
     );
 
@@ -122,8 +127,9 @@ class ControlModel {
       hopper_libras,
         porcentaje_chocolate_piso,
         total_peso_palet,
-        bandejas_con_chocolate,
+      bandejas_con_chocolate,
       producto_terminado_proceso,
+      assembled_displays,
       total_chocolate_sistema,
       moldes_libras,
       banda_libras,
@@ -134,6 +140,7 @@ class ControlModel {
       devuelto_libras,
       bandejas_libras,
       proceso_libras,
+      displays_libras,
     } = datosControl;
 
     await db.query(
@@ -151,6 +158,7 @@ class ControlModel {
             total_peso_palet = COALESCE(?, total_peso_palet),
             bandejas_con_chocolate = COALESCE(?, bandejas_con_chocolate),
            producto_terminado_proceso = COALESCE(?, producto_terminado_proceso),
+           assembled_displays = COALESCE(?, assembled_displays),
            total_chocolate_sistema = COALESCE(?, total_chocolate_sistema),
            moldes_libras = COALESCE(?, moldes_libras),
            banda_libras = COALESCE(?, banda_libras),
@@ -160,8 +168,9 @@ class ControlModel {
            piso_libras = COALESCE(?, piso_libras),
            devuelto_libras = COALESCE(?, devuelto_libras),
            bandejas_libras = COALESCE(?, bandejas_libras),
-           proceso_libras = COALESCE(?, proceso_libras)
-       WHERE id_control = ?`,
+           proceso_libras = COALESCE(?, proceso_libras),
+           displays_libras = COALESCE(?, displays_libras)
+        WHERE id_control = ?`,
       [
         id_turno,
         item_chocolate_tanque,
@@ -176,6 +185,7 @@ class ControlModel {
         total_peso_palet,
         bandejas_con_chocolate,
         producto_terminado_proceso,
+        assembled_displays,
         total_chocolate_sistema,
         moldes_libras,
         banda_libras,
@@ -186,6 +196,7 @@ class ControlModel {
         devuelto_libras,
         bandejas_libras,
         proceso_libras,
+        displays_libras,
         id,
       ],
     );

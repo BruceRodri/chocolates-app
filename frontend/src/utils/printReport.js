@@ -70,6 +70,7 @@ export function openPrintWindow(data, resource) {
     <tr><td>Molds Filled</td><td class="num">${ins.moldesLlenados ?? '—'}</td></tr>
     <tr><td>% Singles Piece on Belt</td><td class="num">${ins.porcentajeSinglesBanda != null ? ins.porcentajeSinglesBanda + '%' : '—'}</td></tr>
     <tr><td>Tray with Chocolate</td><td class="num">${ins.bandejasConChocolate ?? '—'}</td></tr>
+    <tr><td>Assembled displays</td><td class="num">${ins.assembledDisplays ?? '—'}</td></tr>
     <tr><td>Finished Product in Process</td><td class="num">${ins.productoTerminadoProceso ?? '—'}</td></tr>
   </table>
 
@@ -102,6 +103,7 @@ export function openPrintWindow(data, resource) {
     <tr><td>Hopper</td><td class="num">${fmt(calc.enHopper)}</td></tr>
     <tr><td>Floor</td><td class="num">${fmt(ins.totalPesoPalet)}</td></tr>
     <tr><td>Trays</td><td class="num">${fmt(calc.enBandejas)}</td></tr>
+    <tr><td>Assembled displays</td><td class="num">${fmt(calc.enDisplays)}</td></tr>
     <tr><td>FG Process</td><td class="num">${fmt(calc.enProcesoTerminado)}</td></tr>
   </table>
 

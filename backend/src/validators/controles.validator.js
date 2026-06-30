@@ -26,6 +26,7 @@ class ControlesValidator {
       "total_peso_palet",
       "bandejas_con_chocolate",
       "producto_terminado_proceso",
+      "assembled_displays",
       "total_chocolate_sistema",
     ];
 

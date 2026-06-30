@@ -34,6 +34,7 @@ export const CRUD_RESOURCES = {
       {
         label: 'PRODUCTION',
         columns: [
+          { label: 'Assembled displays', getValue: (item) => item.insumos?.assembledDisplays ?? '—' },
           { label: 'Total Physical (lb)', getValue: (item) => item.totalesSistema?.totalChocolateFisico?.toFixed(2) },
           { label: 'Total System (lb)', getValue: (item) => item.totalesSistema?.totalChocolateTeoricoSistema?.toFixed(2) },
           { label: 'To Add', getValue: (item) => item.totalesSistema?.ajusteAdicionRetiro?.toFixed(2) },
@@ -51,6 +52,7 @@ export const CRUD_RESOURCES = {
           { label: 'Hopper', getValue: (item) => item.calculosLibras?.enHopper?.toFixed(2) },
           { label: 'Floor', getValue: (item) => item.calculosLibras?.enPiso?.toFixed(2) },
           { label: 'Trays', getValue: (item) => item.calculosLibras?.enBandejas?.toFixed(2) },
+          { label: 'Assembled displays', getValue: (item) => item.calculosLibras?.enDisplays?.toFixed(2) },
           { label: 'FG Process', getValue: (item) => item.calculosLibras?.enProcesoTerminado?.toFixed(2) },
         ],
       },
@@ -69,6 +71,7 @@ export const CRUD_RESOURCES = {
       total_peso_palet: 0,
       bandejas_con_chocolate: 0,
       producto_terminado_proceso: 0,
+      assembled_displays: 0,
       total_chocolate_sistema: 0,
     },
     fields: [
@@ -95,6 +98,7 @@ export const CRUD_RESOURCES = {
       { name: 'porcentaje_singles_banda', label: '% Singles Piece on Belt', section: 'Production', type: 'number' },
       { name: 'bandejas_con_chocolate', label: 'Tray with Chocolate', section: 'Production', type: 'number' },
       { name: 'producto_terminado_proceso', label: 'Finished Product in Process', section: 'Production', type: 'number' },
+      { name: 'assembled_displays', label: 'Assembled displays', section: 'Production', type: 'number' },
       { name: 'porcentaje_tanque_morcos', label: '% Morcos Tank', section: 'Tanks & Floor', type: 'number' },
       { name: 'temper_unit_libras', label: 'Temper unit', section: 'Tanks & Floor', type: 'number', step: '0.01' },
       { name: 'porcentaje_tanque_pti', label: '% PTI Tank', section: 'Tanks & Floor', type: 'number' },
@@ -111,6 +115,7 @@ export const CRUD_RESOURCES = {
       porcentaje_singles_banda: item.insumos?.porcentajeSinglesBanda,
       bandejas_con_chocolate: item.insumos?.bandejasConChocolate,
       producto_terminado_proceso: item.insumos?.productoTerminadoProceso,
+      assembled_displays: item.insumos?.assembledDisplays,
       porcentaje_tanque_morcos: item.insumos?.porcentajeTanqueMorcos,
       temper_unit_libras: item.insumos?.temperUnitLibras,
       porcentaje_tanque_pti: item.insumos?.porcentajeTanquePti,

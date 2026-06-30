@@ -61,6 +61,7 @@ CREATE TABLE controles_diarios (
     total_peso_palet DECIMAL(12,5) NOT NULL DEFAULT 0,
     bandejas_con_chocolate INT NOT NULL,
     producto_terminado_proceso INT NOT NULL,
+    assembled_displays INT NOT NULL DEFAULT 0,
     total_chocolate_sistema DECIMAL(12,5) NOT NULL,
     moldes_libras DECIMAL(12,5) DEFAULT 0,
     banda_libras DECIMAL(12,5) DEFAULT 0,
@@ -71,6 +72,7 @@ CREATE TABLE controles_diarios (
     devuelto_libras DECIMAL(12,5) DEFAULT 0,
     bandejas_libras DECIMAL(12,5) DEFAULT 0,
     proceso_libras DECIMAL(12,5) DEFAULT 0,
+    displays_libras DECIMAL(12,5) DEFAULT 0,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
     FOREIGN KEY (item_chocolate_tanque) REFERENCES tipos_chocolate(id_tipo),
     FOREIGN KEY (tanque_morcos) REFERENCES tanques(nombre_tanque),
@@ -99,6 +101,7 @@ SELECT
     ROUND(c.porcentaje_chocolate_piso / 100 * c.total_peso_palet, 5) AS libras_chocolate_piso,
     ROUND(c.bandejas_con_chocolate * tray.capacidad_libras, 5) AS libras_bandejas,
     ROUND(c.producto_terminado_proceso * p.libras_pieza_chocolate * p.piezas_caja, 5) AS libras_producto_en_proceso,
+    ROUND(c.assembled_displays * p.piezas_display * p.libras_pieza_chocolate, 5) AS libras_displays,
     ROUND(
         (c.moldes_llenados * p.unidades_por_molde * p.libras_pieza_chocolate) +
         (c.porcentaje_singles_banda / 100 * p.piezas_singles_en_banda * p.libras_pieza_chocolate) +
@@ -108,7 +111,8 @@ SELECT
         c.hopper_libras +
         (c.porcentaje_chocolate_piso / 100 * c.total_peso_palet) +
         (c.bandejas_con_chocolate * tray.capacidad_libras) +
-        (c.producto_terminado_proceso * p.libras_pieza_chocolate * p.piezas_caja), 5
+        (c.producto_terminado_proceso * p.libras_pieza_chocolate * p.piezas_caja) +
+        (c.assembled_displays * p.piezas_display * p.libras_pieza_chocolate), 5
     ) AS total_chocolate_fisico,
     c.total_chocolate_sistema,
     GREATEST(0, ROUND(
@@ -120,7 +124,8 @@ SELECT
         c.hopper_libras +
         (c.porcentaje_chocolate_piso / 100 * c.total_peso_palet) +
         (c.bandejas_con_chocolate * tray.capacidad_libras) +
-        (c.producto_terminado_proceso * p.libras_pieza_chocolate * p.piezas_caja)) - c.total_chocolate_sistema, 5
+        (c.producto_terminado_proceso * p.libras_pieza_chocolate * p.piezas_caja) +
+        (c.assembled_displays * p.piezas_display * p.libras_pieza_chocolate)) - c.total_chocolate_sistema, 5
     )) AS cantidad_a_agregar_al_sistema,
     GREATEST(0, ROUND(
         c.total_chocolate_sistema - ((c.moldes_llenados * p.unidades_por_molde * p.libras_pieza_chocolate) +
@@ -131,7 +136,8 @@ SELECT
         c.hopper_libras +
         (c.porcentaje_chocolate_piso / 100 * c.total_peso_palet) +
         (c.bandejas_con_chocolate * tray.capacidad_libras) +
-        (c.producto_terminado_proceso * p.libras_pieza_chocolate * p.piezas_caja)), 5
+        (c.producto_terminado_proceso * p.libras_pieza_chocolate * p.piezas_caja) +
+        (c.assembled_displays * p.piezas_display * p.libras_pieza_chocolate)), 5
     )) AS cantidad_a_retirar_del_sistema
 FROM controles_diarios c
 JOIN usuarios u ON c.id_usuario = u.id_usuario
