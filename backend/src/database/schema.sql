@@ -98,7 +98,7 @@ SELECT
     c.temper_unit_libras AS libras_temper_unit,
     ROUND(c.porcentaje_tanque_pti / 100 * pti.capacidad_libras, 5) AS libras_tanque_pti,
     c.hopper_libras AS libras_hopper,
-    ROUND(c.porcentaje_chocolate_piso / 100 * c.total_peso_palet, 5) AS libras_chocolate_piso,
+    ROUND(c.total_peso_palet, 5) AS libras_chocolate_piso,
     ROUND(c.bandejas_con_chocolate * tray.capacidad_libras, 5) AS libras_bandejas,
     ROUND(c.producto_terminado_proceso * p.libras_pieza_chocolate * p.piezas_caja, 5) AS libras_producto_en_proceso,
     ROUND(c.assembled_displays * p.piezas_display * p.libras_pieza_chocolate, 5) AS libras_displays,
@@ -109,7 +109,7 @@ SELECT
         c.temper_unit_libras +
         (c.porcentaje_tanque_pti / 100 * pti.capacidad_libras) +
         c.hopper_libras +
-        (c.porcentaje_chocolate_piso / 100 * c.total_peso_palet) +
+        c.total_peso_palet +
         (c.bandejas_con_chocolate * tray.capacidad_libras) +
         (c.producto_terminado_proceso * p.libras_pieza_chocolate * p.piezas_caja) +
         (c.assembled_displays * p.piezas_display * p.libras_pieza_chocolate), 5
@@ -122,7 +122,7 @@ SELECT
         c.temper_unit_libras +
         (c.porcentaje_tanque_pti / 100 * pti.capacidad_libras) +
         c.hopper_libras +
-        (c.porcentaje_chocolate_piso / 100 * c.total_peso_palet) +
+        c.total_peso_palet +
         (c.bandejas_con_chocolate * tray.capacidad_libras) +
         (c.producto_terminado_proceso * p.libras_pieza_chocolate * p.piezas_caja) +
         (c.assembled_displays * p.piezas_display * p.libras_pieza_chocolate)) - c.total_chocolate_sistema, 5
@@ -134,7 +134,7 @@ SELECT
         c.temper_unit_libras +
         (c.porcentaje_tanque_pti / 100 * pti.capacidad_libras) +
         c.hopper_libras +
-        (c.porcentaje_chocolate_piso / 100 * c.total_peso_palet) +
+        c.total_peso_palet +
         (c.bandejas_con_chocolate * tray.capacidad_libras) +
         (c.producto_terminado_proceso * p.libras_pieza_chocolate * p.piezas_caja) +
         (c.assembled_displays * p.piezas_display * p.libras_pieza_chocolate)), 5
